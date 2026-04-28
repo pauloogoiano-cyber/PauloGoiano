@@ -1,12 +1,11 @@
 # Análise orientada a objeto
 > [!NOTE]
-> A **análise** orientada a objeto consiste na descrição do problema a ser tratado, duas primeiras etapas da tabela abaixo, a definição de casos de uso e a definição do domínio do problema.
+> O objetivo do sistema é desenvolver uma Estação Meteorológica capaz de monitorar e registrar variáveis ambientais, com o foco em: Velocidade e Direção do vento e Índice de precipitação.
+> O sistema deve ser estruturado utilizando os conceitos de POO visto em sala, permitindo a reutilização do código, facilidade de manutenção e expansão para novos sensores caso venha a ser preciso. 
 
 ## Descrição Geral do domínio do problema
 
-Descrever de forma geral o domínio do problema.
-
-Possíveis requisitos funcionais e não-funcionais podem ser elencados aqui.
+> O domínio envolve a coleta, processamento e apresentação de dados meteorológicos.
 
 ## Diagrama de Casos de Uso
 
