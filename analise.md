@@ -17,7 +17,11 @@
 
 ## Diagrama de Domínio do problema
 
-Elaborar um diagrama conceitual do domínio do problema.
+<p>
+  <a href="img/UML.drawio" target="_blank">
+    📄 Abrir UML
+  </a>
+</p>
 
 
 <div align="center">
