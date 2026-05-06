@@ -18,7 +18,7 @@
 ## Diagrama de Domínio do problema
 
 <p>
-  <a href="img/UML.drawio" target="_blank">
+  <a href="img/UML.drawio.pdf" target="_blank">
     📄 Abrir UML
   </a>
 </p>
