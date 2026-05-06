@@ -9,8 +9,12 @@
 
 ## Diagrama de Casos de Uso
 
-Apresentar o diagram de casos de uso, identificando as funcionalidades do sistema assim como os atores envolvidos
- 
+<p>
+  <a href="img/diagrama_de_casos_de_uso_Dashoard.pdf" target="_blank">
+    📄 Abrir Diagrama de Casos de Uso
+  </a>
+</p>
+
 ## Diagrama de Domínio do problema
 
 Elaborar um diagrama conceitual do domínio do problema.
