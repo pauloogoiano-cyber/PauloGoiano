@@ -7,6 +7,16 @@
 
 > O domínio envolve a coleta, processamento e apresentação de dados meteorológicos.
 
+## Requisitos Funcionais
+
+>-Exibir Dados Meteorológicos
+>-Filtrar Dados Meteorológicos
+>-Cadastrar/Remover Sensores na Estação
+>-Coletar Informações dos Sensores
+>-Verificar Status dos Sensores
+>-Exportar Dados Meteorológicos
+
+
 ## Diagrama de Casos de Uso
 
 <p>
