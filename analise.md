@@ -26,13 +26,20 @@
   </a>
 </p>
 
->-Ator Principal: Usuário <br>
->-Pré-condições
+>Ator Principal: Usuário <br>
+
+>Pré-condições
 O usuário deve ter acesso ao sistema.
 A estação meteorológica deve estar conectada.
 Pelo menos um sensor deve estar ativo e enviando dados. <br>
 
-
+>Fluxo Principal
+O usuário acessa o dashboard.
+O sistema estabelece comunicação com a estação meteorológica.
+O sistema recebe os dados dos sensores.
+O dashboard exibe os dados atualizados automaticamente.
+O usuário acompanha as informações em tempo real.
+O sistema continua atualizando os dados enquanto a conexão estiver ativa.
 
 
 ## Diagrama de Domínio do problema
