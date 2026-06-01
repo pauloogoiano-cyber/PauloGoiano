@@ -26,6 +26,15 @@
   </a>
 </p>
 
+>-Ator Principal: Usuário <br>
+>-Pré-condições
+O usuário deve ter acesso ao sistema.
+A estação meteorológica deve estar conectada.
+Pelo menos um sensor deve estar ativo e enviando dados. <br>
+
+
+
+
 ## Diagrama de Domínio do problema
 
 <p>
