@@ -10,11 +10,11 @@
 ## Requisitos Funcionais
 
 >-Exibir Dados Meteorológicos <br>
->-Filtrar Dados Meteorológicos
->-Cadastrar/Remover Sensores na Estação
->-Coletar Informações dos Sensores
->-Verificar Status dos Sensores
->-Exportar Dados Meteorológicos
+>-Filtrar Dados Meteorológicos <br>
+>-Cadastrar/Remover Sensores na Estação <br>
+>-Coletar Informações dos Sensores <br>
+>-Verificar Status dos Sensores <br>
+>-Exportar Dados Meteorológicos <br>
 >-
 
 
