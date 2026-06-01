@@ -15,7 +15,6 @@
 >-Coletar Informações dos Sensores <br>
 >-Verificar Status dos Sensores <br>
 >-Exportar Dados Meteorológicos <br>
->-
 
 
 ## Diagrama de Casos de Uso
