@@ -9,7 +9,7 @@
 
 ## Requisitos Funcionais
 
->-Exibir Dados Meteorológicos
+>-Exibir Dados Meteorológicos <br>
 >-Filtrar Dados Meteorológicos
 >-Cadastrar/Remover Sensores na Estação
 >-Coletar Informações dos Sensores
