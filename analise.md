@@ -49,7 +49,7 @@ O sistema continua atualizando os dados enquanto a conexão estiver ativa.
 ## Diagrama de Domínio do problema
 
 <p>
-  <a href="img/UML.drawio.pdf" target="_blank">
+  <a href="img/UML.jpg" target="_blank">
     📄 Abrir UML
   </a>
 </p>
