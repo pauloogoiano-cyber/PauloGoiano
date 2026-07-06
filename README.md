@@ -2,13 +2,13 @@
      width="30%"
      style="padding: 10px">
 
-# << Título do projeto >>
+# << Dashboard Estação Meteorológica >>
 
 ## << Descrição breve do domínio do problema >>
 
-> Repositório destinado para o desenvolvimento do projeto final da discipliana PRG22107 - Programação orienta a objeto. 
+> O domínio do problema consiste no desenvolvimento de uma estação meteorológica digital integrada a um painel de controle (dashboard). O sistema tem como objetivo principal automatizar a coleta de dados de variáveis ambientais e meteorológicas essenciais (como velocidade e direção do vento, índice de precipitação e temperatura), processar essas informações de forma estruturada e apresentá-las em tempo real por meio de uma interface gráfica amigável e moderna. Além disso, o domínio abrange o controle de conectividade física com o hardware (via porta USB/Serial), o gerenciamento de acesso de operadores por meio de autenticação de segurança e coleta dos dados.
 > 
-> Aluno: Nome do aluno  
+> Aluno: Paulo Goiano. 
 > Professor: Hugo Marcondes
 
 <p align=center><strong>SUMÁRIO</strong></p>
