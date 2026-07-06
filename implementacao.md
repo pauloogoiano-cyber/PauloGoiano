@@ -14,7 +14,7 @@
 *   **`QTimer`:** Biblioteca de temporização assíncrona baseada em milissegundos. Foi implementada em duas frentes independentes: uma dedicada a atualizar as informações e simulações climáticas rigidamente a cada 10 segundos, e outra focada em monitorar a presença e integridade do sinal USB a cada 3 segundos.
 *   **`QPainter`:** Biblioteca de desenho gráfico vetorial em baixo nível. Utilizada de forma customizada na classe `CompassWidget` para renderizar matematicamente a bússola meteorológica, calculando os pontos cardinais e a rotação em graus polares do ponteiro azul indicador.
 *   **`QRandomGenerator`:** Utilizado para emular de forma pseudoaleatória o comportamento real da atmosfera (como rajadas de vento, índices pluviométricos e oscilações de temperatura) na ausência de dados lidos pelo hardware.
-*   **`QFileDialog` & `QTextStream`:** Bibliotecas responsáveis pela manipulação e persistência de arquivos no sistema operacional, permitindo que o operador exporte o histórico de dados lidos em formato de texto plano (`.txt`) diretamente no dispositivo local.
+
 
 ---
 
