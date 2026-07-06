@@ -1,21 +1,26 @@
 # Análise orientada a objeto
 > [!NOTE]
-> O objetivo do sistema é desenvolver uma Estação Meteorológica capaz de monitorar e registrar variáveis ambientais, com o foco em: Velocidade, Direção do vento e Índice de precipitação.
-> O sistema deve ser estruturado utilizando os conceitos de POO visto em sala, permitindo a reutilização do código, facilidade de manutenção e expansão para novos sensores caso venha a ser preciso. 
+>O objetivo do sistema é o desenvolvimento de uma Estação Meteorológica capaz de realizar o monitoramento e registro de variáveis ambientais, com foco em:
+    Velocidade do vento
+    Direção do vento
+    Índice de precipitação (pluviosidade)
+    Temperatura 
+> O sistema foi totalmente construído utilizando os conceitos de Programação Orientada a Objetos (POO) vistos em sala, permitindo alta reutilização de código, facilidade de manutenção e expansão para novos sensores caso seja necessário. 
 
 ## Descrição Geral do domínio do problema
 
-> O domínio envolve a coleta, processamento e apresentação de dados meteorológicos.
-
+>O domínio deste projeto envolve a coleta, o processamento e a apresentação visual de dados meteorológicos obtidos por sensores de hardware em campo (ou simulados em tempo real) e transmitidos via barramento USB/Serial para um dashboard de controle centralizado.
 ## Requisitos Funcionais
 
->-Exibir Dados Meteorológicos <br>
->-Filtrar Dados Meteorológicos <br>
->-Cadastrar/Remover Sensores na Estação <br>
->-Coletar Informações dos Sensores <br>
->-Verificar Status dos Sensores <br>
->-Exportar Dados Meteorológicos <br>
+Em total conformidade com a especificação técnica do problema, o sistema atende aos seguintes requisitos estruturais:
 
+    > Exibir Dados Meteorológicos: Apresentação em tempo real de temperatura, velocidade do vento, pluviosidade e direção analógica.
+
+    > Filtrar Dados Meteorológicos: Mecanismo de busca e filtragem condicional na aba de histórico em horários específicos.
+
+    > Coletar Informações dos Sensores: Escuta ativa e tratamento sintático de fluxos de dados recebidos por comunicação de hardware.
+
+    > Verificar Status dos Sensores: Monitoramento de baixo nível para rastrear se a conexão USB com o notebook está ativa, alertando o operador visualmente sobre quedas de sinal.
 
 ## Diagrama de Casos de Uso
 
