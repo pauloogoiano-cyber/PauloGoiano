@@ -14,7 +14,7 @@ A classe `sensorpluviometro` é uma especialização direta da classe base `Sens
 *   **`setChuva(double chuva)`:** Recebe o sinal bruto enviado pelo hardware do pluviômetro de báscula digital (como o modelo PB10), converte o dado para a escala em milímetros, atualiza o atributo interno e modifica o texto da `labelChuva` na interface gráfica em tempo real.
 
 ### Relações no Diagrama de Classes
-*   **Herança (`Sensor <|-- sensorpluviometro`):** Ela herda as propriedades e assinaturas genéricas da classe mãe `Sensor`, estendendo-as para gerenciar especificamente os índices de pluviosidade da estação.
+*   **Herança:** Ela herda as propriedades e assinaturas genéricas da classe mãe `Sensor`.
 
 ---
 
