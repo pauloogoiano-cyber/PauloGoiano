@@ -13,9 +13,7 @@
 #include <QRandomGenerator>
 #include <QDateTime>
 #include <QGroupBox>
-#include <QListWidget> // 🟢 Incluído para a nova lista
 
-// ================= CONSTRUTOR =================
 Dashboard::Dashboard(QWidget *parent)
     : QWidget(parent)
 {
@@ -25,25 +23,22 @@ Dashboard::Dashboard(QWidget *parent)
     setupStyle();
     setupConnections();
 
-    // Instancia o objeto serial
     serial = new QSerialPort(this);
 
-    // Timer de dados atualizando a cada 10 segundos (10000 ms)
+    // Timer de dados (10 segundos)
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Dashboard::simularDados);
     timer->start(10000);
 
-    // Timer dedicado para checar a USB a cada 3 segundos
+    // Timer da USB (3 segundos)
     timerSerial = new QTimer(this);
     connect(timerSerial, &QTimer::timeout, this, &Dashboard::verificarSerial);
     timerSerial->start(3000);
 
-    // Executa as primeiras checagens imediatamente ao abrir
     simularDados();
     verificarSerial();
 }
 
-// Destrutor
 Dashboard::~Dashboard()
 {
     if (serial && serial->isOpen()) {
@@ -51,20 +46,30 @@ Dashboard::~Dashboard()
     }
 }
 
-// ================= UI =================
 void Dashboard::setupUI()
 {
     auto *mainLayout = new QHBoxLayout(this);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
+    mainLayout->setSpacing(0);
 
-    // MENU ESQUERDO
+    // MENU LATERAL AZUL
     QWidget *menuWidget = new QWidget();
-    menuWidget->setFixedWidth(180);
+    menuWidget->setObjectName("menuLateral");
+    menuWidget->setFixedWidth(200);
 
     auto *menuLayout = new QVBoxLayout(menuWidget);
-    btnHome = new QPushButton("Home");
-    btnAdmin = new QPushButton("Admin");
-    btnHistorico = new QPushButton("Histórico");
-    btnAtualizar = new QPushButton("Atualizar");
+    menuLayout->setContentsMargins(15, 30, 15, 30);
+    menuLayout->setSpacing(15);
+
+    QLabel *lblMenuLogo = new QLabel("☰  PAINEL");
+    lblMenuLogo->setStyleSheet("color: white; font-size: 18px; font-weight: bold; margin-bottom: 20px;");
+    lblMenuLogo->setAlignment(Qt::AlignCenter);
+    menuLayout->addWidget(lblMenuLogo);
+
+    btnHome = new QPushButton("⌂  Home");
+    btnAdmin = new QPushButton("⚙  Admin");
+    btnHistorico = new QPushButton("📋  Histórico");
+    btnAtualizar = new QPushButton("🔄  Atualizar");
 
     menuLayout->addWidget(btnHome);
     menuLayout->addWidget(btnAdmin);
@@ -72,168 +77,154 @@ void Dashboard::setupUI()
     menuLayout->addWidget(btnAtualizar);
     menuLayout->addStretch();
 
-    // HOME
-    QWidget *homeWidget = new QWidget();
-    auto *homeLayout = new QVBoxLayout(homeWidget);
+    // PAINEL CENTRAL
+    QWidget *conteudoWidget = new QWidget();
+    conteudoWidget->setObjectName("conteudoPrincipal");
+    auto *conteudoLayout = new QVBoxLayout(conteudoWidget);
+    conteudoLayout->setContentsMargins(30, 30, 30, 30);
+    conteudoLayout->setSpacing(20);
 
-    // 1. MOLDURA DE SEPARAÇÃO: DADOS DOS SENSORES
-    auto *groupSensores = new QGroupBox("Leituras dos Sensores");
-    auto *layoutSensoresGroup = new QVBoxLayout(groupSensores);
+    auto *headerLayout = new QHBoxLayout();
+    auto *vHeaderTxt = new QVBoxLayout();
+    QLabel *lblNomeUsuario = new QLabel("Olá, Operador");
+    lblNomeUsuario->setStyleSheet("font-size: 28px; font-weight: bold; color: #0F172A; padding: 0; margin: 0;");
+    QLabel *lblSubTitulo = new QLabel("Bem-vindo de volta ao seu centro de controle");
+    lblSubTitulo->setStyleSheet("font-size: 14px; color: #64748B; padding: 0;");
+    vHeaderTxt->addWidget(lblNomeUsuario);
+    vHeaderTxt->addWidget(lblSubTitulo);
+    headerLayout->addLayout(vHeaderTxt);
+    headerLayout->addStretch();
+    conteudoLayout->addLayout(headerLayout);
 
-    // Card da Bússola
-    QWidget *cardCompass = new QWidget();
-    cardCompass->setObjectName("card");
-    auto *compassLayout = new QVBoxLayout(cardCompass);
-    compass = new CompassWidget();
-    compass->setMinimumSize(320, 320);
-    compassLayout->addWidget(compass, 0, Qt::AlignCenter);
+    paginaHome = new QWidget();
+    auto *homeLayout = new QVBoxLayout(paginaHome);
+    homeLayout->setContentsMargins(0, 0, 0, 0);
+    homeLayout->setSpacing(20);
 
-    // Card do Vento
-    QWidget *cardVento = new QWidget();
-    cardVento->setObjectName("card");
-    auto *ventoLayout = new QVBoxLayout(cardVento);
-    lblVento = new QLabel("Velocidade do vento: -- m/s");
+    // Destaque Temperatura e Cards Rápidos
+    auto *linhaSuperiorLayout = new QHBoxLayout();
+    linhaSuperiorLayout->setSpacing(20);
+
+    QWidget *cardWeatherHighlight = new QWidget();
+    cardWeatherHighlight->setObjectName("cardClimaDestaque");
+    cardWeatherHighlight->setMinimumHeight(180);
+    auto *weatherHighlightLayout = new QVBoxLayout(cardWeatherHighlight);
+
+    QLabel *lblWeatherTitle = new QLabel("TEMPO REAL");
+    lblWeatherTitle->setStyleSheet("color: rgba(255,255,255,0.8); font-size: 13px; font-weight: bold;");
+    lblTemperatura = new QLabel("--°C");
+    lblTemperatura->setStyleSheet("color: white; font-size: 48px; font-weight: bold;");
+    QLabel *lblWeatherDesc = new QLabel("Monitoramento Estação Meteorológica");
+    lblWeatherDesc->setStyleSheet("color: white; font-size: 14px;");
+
+    weatherHighlightLayout->addWidget(lblWeatherTitle);
+    weatherHighlightLayout->addWidget(lblTemperatura);
+    weatherHighlightLayout->addWidget(lblWeatherDesc);
+    linhaSuperiorLayout->addWidget(cardWeatherHighlight, 2);
+
+    QWidget *cardQuickStats = new QWidget();
+    cardQuickStats->setObjectName("cardBranco");
+    auto *quickStatsLayout = new QVBoxLayout(cardQuickStats);
+
+    QLabel *lblQuickTitle = new QLabel("Dados Rápidos do Sistema");
+    lblQuickTitle->setStyleSheet("font-weight: bold; color: #475569; font-size: 13px; margin-bottom: 5px;");
+    quickStatsLayout->addWidget(lblQuickTitle);
+
+    auto *gridStats = new QHBoxLayout();
+    lblVento = new QLabel("Vento\n-- m/s");
+    lblChuva = new QLabel("Chuva\n-- mm");
     lblVento->setAlignment(Qt::AlignCenter);
-    ventoLayout->addWidget(lblVento);
-
-    // Card da Chuva
-    QWidget *cardChuva = new QWidget();
-    cardChuva->setObjectName("card");
-    auto *chuvaLayout = new QVBoxLayout(cardChuva);
-    lblChuva = new QLabel("Pluviosidade: -- mm");
     lblChuva->setAlignment(Qt::AlignCenter);
-    chuvaLayout->addWidget(lblChuva);
+    lblVento->setStyleSheet("font-size: 16px; font-weight: bold; color: #2D6CDF; background: #F0F5FF; padding: 15px; border-radius: 10px;");
+    lblChuva->setStyleSheet("font-size: 16px; font-weight: bold; color: #F59E0B; background: #FFFBEB; padding: 15px; border-radius: 10px;");
+    gridStats->addWidget(lblVento);
+    gridStats->addWidget(lblChuva);
+    quickStatsLayout->addLayout(gridStats);
+    linhaSuperiorLayout->addWidget(cardQuickStats, 3);
+    homeLayout->addLayout(linhaSuperiorLayout);
 
-    // 🟢 NOVO: Card com a mini lista dos 5 últimos valores
+    // Bússola e Mini Lista
+    auto *linhaCentralLayout = new QHBoxLayout();
+    linhaCentralLayout->setSpacing(20);
+
+    QWidget *cardCompass = new QWidget();
+    cardCompass->setObjectName("cardBranco");
+    auto *compassLayout = new QVBoxLayout(cardCompass);
+    compassLayout->setAlignment(Qt::AlignCenter);
+
+    QLabel *lblTitleCompass = new QLabel("Direção Analógica do Vento");
+    lblTitleCompass->setStyleSheet("font-weight: bold; color: #475569; font-size: 13px;");
+    lblTitleCompass->setAlignment(Qt::AlignCenter);
+
+    compass = new CompassWidget();
+    compass->setMinimumSize(300, 300);
+
+    compassLayout->addWidget(lblTitleCompass);
+    compassLayout->addWidget(compass);
+    linhaCentralLayout->addWidget(cardCompass, 2);
+
     QWidget *cardLista = new QWidget();
-    cardLista->setObjectName("card");
+    cardLista->setObjectName("cardBranco");
     auto *listaLayout = new QVBoxLayout(cardLista);
 
-    QLabel *lblTituloLista = new QLabel("Últimas 5 Medições (Tempo Real):");
+    QLabel *lblTituloLista = new QLabel("Histórico Recente (Últimas 5 Linhas)");
     lblTituloLista->setStyleSheet("font-weight: bold; color: #475569; font-size: 13px;");
 
     listaUltimosDados = new QListWidget();
-    listaUltimosDados->setFixedHeight(130); // Altura fixa para não esticar a tela
+    listaUltimosDados->setStyleSheet("background: #F8FAFC; border: none; border-radius: 8px; color: #334155; padding: 5px;");
 
     listaLayout->addWidget(lblTituloLista);
     listaLayout->addWidget(listaUltimosDados);
+    linhaCentralLayout->addWidget(cardLista, 3);
+    homeLayout->addLayout(linhaCentralLayout);
 
-    // Adiciona todos os componentes na moldura de sensores
-    layoutSensoresGroup->addWidget(cardCompass);
-    layoutSensoresGroup->addWidget(cardVento);
-    layoutSensoresGroup->addWidget(cardChuva);
-    layoutSensoresGroup->addWidget(cardLista); // 🟢 Colocando a lista na tela
-
-    // 2. MOLDURA DE SEPARAÇÃO: INFRAESTRUTURA / CONEXÃO
-    auto *groupStatus = new QGroupBox("Comunicação e Conectividade");
-    auto *layoutStatusGroup = new QVBoxLayout(groupStatus);
-
-    // Card de Status da Conexão USB
+    // Status Conexão
     QWidget *cardStatus = new QWidget();
-    cardStatus->setObjectName("card");
+    cardStatus->setObjectName("cardBranco");
     auto *statusLayout = new QVBoxLayout(cardStatus);
-    lblStatus = new QLabel("Status: Desconectado");
+    lblStatus = new QLabel("Status: Verificando...");
     lblStatus->setAlignment(Qt::AlignCenter);
     statusLayout->addWidget(lblStatus);
+    homeLayout->addWidget(cardStatus);
 
-    layoutStatusGroup->addWidget(cardStatus);
-
-    // Insere os blocos criados na página principal da Home
-    homeLayout->addWidget(groupSensores);
-    homeLayout->addWidget(groupStatus);
-    homeLayout->addStretch();
-
-    // HISTÓRICO
     paginaHistorico = new QWidget();
     auto *histLayout = new QVBoxLayout(paginaHistorico);
     txtHistorico = new QTextEdit();
     txtHistorico->setReadOnly(true);
     histLayout->addWidget(txtHistorico);
 
-    // ADMIN
     paginaAdmin = new Admin(new SensorManager(this), this);
 
-    // STACK
     stack = new QStackedLayout();
-    paginaHome = homeWidget;
-
     stack->addWidget(paginaHome);
     stack->addWidget(paginaAdmin);
     stack->addWidget(paginaHistorico);
+    conteudoLayout->addLayout(stack);
 
     mainLayout->addWidget(menuWidget);
-    mainLayout->addLayout(stack);
-
+    mainLayout->addWidget(conteudoWidget);
     mostrarPagina(paginaHome);
 }
 
-// ================= STYLE SHEET =================
 void Dashboard::setupStyle()
 {
     setStyleSheet(R"(
-        Dashboard {
-            background-color: #F8FAFC;
+        QWidget#conteudoPrincipal { background-color: #F3F7FA; }
+        QWidget#menuLateral { background-color: #1E88E5; }
+        QWidget#menuLateral QPushButton {
+            background-color: transparent; color: rgba(255, 255, 255, 0.85);
+            border: none; text-align: left; padding: 12px 20px; font-size: 15px; font-weight: 500; border-radius: 8px;
         }
-
-        QGroupBox {
-            font-size: 14px;
-            font-weight: bold;
-            color: #475569;
-            border: 1px solid #CBD5E1;
-            border-radius: 8px;
-            margin-top: 12px;
-            padding-top: 15px;
+        QWidget#menuLateral QPushButton:hover { background-color: rgba(255, 255, 255, 0.15); color: white; }
+        QWidget#cardBranco { background-color: #FFFFFF; border: none; border-radius: 18px; padding: 18px; }
+        QWidget#cardClimaDestaque {
+            background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #1E88E5, stop:1 #0D47A1);
+            border-radius: 18px; padding: 20px;
         }
-        QGroupBox::title {
-            subcontrol-origin: margin;
-            subcontrol-position: top left;
-            left: 15px;
-            padding: 0 5px;
-        }
-
-        QPushButton {
-            background-color: #2D6CDF;
-            color: white;
-            padding: 8px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        QPushButton:hover {
-            background-color: #1A52B8;
-        }
-        QLabel {
-            color: #1E293B;
-            font-size: 15px;
-            font-weight: 500;
-        }
-        QTextEdit {
-            background-color: #FFFFFF;
-            border: 1px solid #CBD5E1;
-            border-radius: 8px;
-            color: #0F172A;
-            padding: 8px;
-        }
-
-        /* Estilização da mini lista da Home */
-        QListWidget {
-            background-color: #F8FAFC;
-            border: 1px solid #E2E8F0;
-            border-radius: 6px;
-            color: #334155;
-            font-size: 13px;
-        }
-
-        QWidget#card {
-            background-color: #FFFFFF;
-            border: 1px solid #E2E8F0;
-            border-radius: 14px;
-            padding: 12px;
-        }
+        QTextEdit { background-color: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; color: #0F172A; padding: 10px; }
     )");
 }
 
-// ================= CONEXÕES =================
 void Dashboard::setupConnections()
 {
     connect(btnHome, &QPushButton::clicked, this, &Dashboard::abrirHome);
@@ -247,9 +238,9 @@ void Dashboard::abrirHome() { mostrarPagina(paginaHome); }
 void Dashboard::abrirAdmin() { mostrarPagina(paginaAdmin); }
 void Dashboard::abrirHistorico() { mostrarPagina(paginaHistorico); }
 
-// ================= PROCESSAMENTO DE DADOS =================
 void Dashboard::simularDados()
 {
+    ultimaMedicao.temperatura = QRandomGenerator::global()->bounded(14, 39);
     ultimaMedicao.vento = QRandomGenerator::global()->bounded(0, 120);
     ultimaMedicao.chuva = QRandomGenerator::global()->bounded(0, 80);
     ultimaMedicao.direcao = QRandomGenerator::global()->bounded(360);
@@ -262,45 +253,43 @@ void Dashboard::simularDados()
 void Dashboard::atualizarDados()
 {
     static auto dirTexto = [](int g) {
-        const QStringList d = {"NORTE","NORDESTE","LESTE","SUDESTE","SUL","SUDOESTE","OESTE","NOROESTE"};
+        const QStringList d = {
+            "NORTE", "NORDESTE", "LESTE", "SUDESTE",
+            "SUL", "SUDOESTE", "OESTE", "NOROESTE"
+        };
         return d[(g + 22) / 45 % 8];
     };
 
     QString direcaoStr = dirTexto(ultimaMedicao.direcao);
 
-    lblVento->setText("Velocidade do vento: " + QString::number(ultimaMedicao.vento) + " m/s");
-    lblChuva->setText("Pluviosidade: " + QString::number(ultimaMedicao.chuva) + " mm");
+    lblTemperatura->setText(QString::number(ultimaMedicao.temperatura) + "°C");
+    lblVento->setText("Vento\n" + QString::number(ultimaMedicao.vento) + " m/s");
+    lblChuva->setText("Chuva\n" + QString::number(ultimaMedicao.chuva) + " mm");
 
     if (compass)
         compass->setDirecao(ultimaMedicao.direcao);
 
-    // 🟢 LÓGICA DOS 5 ÚLTIMOS VALORES NA HOME
     if (listaUltimosDados) {
-        // Monta o texto simplificado da linha
         QString novaLinha = ultimaMedicao.tempo.toString("hh:mm:ss") +
-                            " : Vento: " + QString::number(ultimaMedicao.vento) + " m/s" +
-                            " | Chuva: " + QString::number(ultimaMedicao.chuva) + " mm" +
-                            " | Direção: " + direcaoStr;
+                            " -> T: " + QString::number(ultimaMedicao.temperatura) + "°C" +
+                            " | V: " + QString::number(ultimaMedicao.vento) + " m/s" +
+                            " | Dir: " + direcaoStr;
 
-        // Insere sempre no topo (índice 0)
         listaUltimosDados->insertItem(0, novaLinha);
-
-        // Se a lista passar de 5 itens, joga fora o mais antigo (o último do índice)
         while (listaUltimosDados->count() > 5) {
             delete listaUltimosDados->takeItem(listaUltimosDados->count() - 1);
         }
     }
 
-    // Mantém o histórico completo na outra aba intacto
     txtHistorico->append(
         ultimaMedicao.tempo.toString("hh:mm:ss") +
-        " | Vento: " + QString::number(ultimaMedicao.vento) +
-        " m/s | Chuva: " + QString::number(ultimaMedicao.chuva) +
-        " mm | Direção: " + direcaoStr
+        " | Temp: " + QString::number(ultimaMedicao.temperatura) + "°C" +
+        " | Vento: " + QString::number(ultimaMedicao.vento) + " m/s" +
+        " | Chuva: " + QString::number(ultimaMedicao.chuva) + " mm" +
+        " | Direção: " + direcaoStr
         );
 }
 
-// ================= VERIFICAÇÃO DA PORTA USB =================
 void Dashboard::verificarSerial()
 {
     if (serial->isOpen()) {
@@ -316,7 +305,7 @@ void Dashboard::verificarSerial()
 
         if (aindaExiste) {
             lblStatus->setText("Status: Conectado (" + serial->portName() + ")");
-            lblStatus->setStyleSheet("color: #10B981; font-weight: bold;");
+            lblStatus->setStyleSheet("color: #10B981; font-weight: bold; font-size: 14px;");
             return;
         } else {
             serial->close();
@@ -327,7 +316,7 @@ void Dashboard::verificarSerial()
 
     if (portas.isEmpty()) {
         lblStatus->setText("Status: Desconectado (Nenhuma USB detectada)");
-        lblStatus->setStyleSheet("color: #EF4444; font-weight: bold;");
+        lblStatus->setStyleSheet("color: #EF4444; font-weight: bold; font-size: 14px;");
         return;
     }
 
@@ -342,9 +331,9 @@ void Dashboard::verificarSerial()
 
     if (serial->open(QIODevice::ReadWrite)) {
         lblStatus->setText("Status: Conectado (" + portaAlvo.portName() + ")");
-        lblStatus->setStyleSheet("color: #10B981; font-weight: bold;");
+        lblStatus->setStyleSheet("color: #10B981; font-weight: bold; font-size: 14px;");
     } else {
         lblStatus->setText("Status: Erro ao abrir a porta " + portaAlvo.portName());
-        lblStatus->setStyleSheet("color: #F59E0B; font-weight: bold;");
+        lblStatus->setStyleSheet("color: #F59E0B; font-weight: bold; font-size: 14px;");
     }
 }

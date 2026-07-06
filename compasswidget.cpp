@@ -16,11 +16,7 @@ void CompassWidget::setDirecao(int graus)
 
 QString CompassWidget::grausParaCardinal(int graus) const
 {
-    const QStringList dir = {
-        "NORTE", "NORDESTE", "LESTE", "SUDESTE",
-        "SUL", "SUDOESTE", "OESTE", "NOROESTE"
-    };
-
+    const QStringList dir = { "NORTE", "NORDESTE", "LESTE", "SUDESTE", "SUL", "SUDOESTE", "OESTE", "NOROESTE" };
     int idx = (graus + 22) / 45 % 8;
     return dir[idx];
 }
@@ -34,12 +30,11 @@ void CompassWidget::paintEvent(QPaintEvent *)
     QPoint c = r.center();
     int radius = qMin(r.width(), r.height()) / 2 - 25;
 
-    // 1. DESENHAR O CÍRCULO DA BÚSSOLA
+    // CÍRCULO DA BÚSSOLA
     p.setPen(QPen(QColor(51, 65, 85), 2));
     p.setBrush(Qt::NoBrush);
     p.drawEllipse(c, radius, radius);
 
-    // 2. DESENHAR OS PONTOS FIXOS NA BORDA
     const QStringList pontos = {"N", "NE", "L", "SE", "S", "SO", "O", "NO"};
     QFont font = p.font();
     font.setPointSize(12);
@@ -59,7 +54,6 @@ void CompassWidget::paintEvent(QPaintEvent *)
         p.drawText(textRect, Qt::AlignCenter, pontos[i]);
     }
 
-    // 3. DESENHAR O PONTEIRO GIRATÓRIO
     p.save();
     p.translate(c);
     p.rotate(direcaoAtual);

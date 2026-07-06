@@ -9,7 +9,6 @@ class CompassWidget : public QWidget
 
 public:
     explicit CompassWidget(QWidget *parent = nullptr);
-
     void setDirecao(int graus);
 
 protected:
@@ -17,7 +16,6 @@ protected:
 
 private:
     int direcaoAtual = 0;
-
     QString grausParaCardinal(int graus) const;
 };
 

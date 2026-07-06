@@ -18,4 +18,4 @@ private:
     QLabel *labelChuva{nullptr};
 };
 
-#endif // SENSORPLUVIOMETRO_H
+#endif

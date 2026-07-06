@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QListWidget>
 
 class QPushButton;
 class QLabel;
@@ -14,13 +15,13 @@ class QStackedLayout;
 class QTextEdit;
 class QWidget;
 class CompassWidget;
-class QListWidget;
 
 struct Medicao
 {
     int vento = 0;
     int chuva = 0;
     int direcao = 0;
+    int temperatura = 0;
     QDateTime tempo;
 };
 
@@ -61,10 +62,10 @@ private:
 
     QLabel *lblVento = nullptr;
     QLabel *lblChuva = nullptr;
+    QLabel *lblTemperatura = nullptr;
     QLabel *lblStatus = nullptr;
 
     QListWidget *listaUltimosDados = nullptr;
-
     QTextEdit *txtHistorico = nullptr;
 
     CompassWidget *compass = nullptr;
@@ -77,4 +78,4 @@ private:
     QVector<Medicao> historico;
 };
 
-#endif // DASHBOARD_H
+#endif

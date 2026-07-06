@@ -27,4 +27,4 @@ private:
     QVector<QWidget*> listaSensores;
 };
 
-#endif // SENSORMANAGER_H
+#endif

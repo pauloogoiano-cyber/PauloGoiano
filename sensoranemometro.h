@@ -23,4 +23,4 @@ private:
     QLabel *labelDirecao{nullptr};
 };
 
-#endif // SENSORANEMOMETRO_H
+#endif
